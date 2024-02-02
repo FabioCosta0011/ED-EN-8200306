@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.Structures.Implementations.ArrayUnorderedList;
 import org.example.Structures.Implementations.LinkedQueue;
 import java.util.Scanner;
 
@@ -9,7 +10,7 @@ import java.util.Scanner;
 public class Player {
     private String name;
     private Location base;
-    private LinkedQueue<Bot> bots; // Data structure to be defined
+    private ArrayUnorderedList<Bot> bots;
 
     /**
      * Constructs a player with the given name.
@@ -19,7 +20,7 @@ public class Player {
     public Player(String name) {
         this.name = name;
         this.base = null;
-        this.bots = new LinkedQueue<>();
+        this.bots = new ArrayUnorderedList<>();
     }
 
     /**
@@ -54,7 +55,7 @@ public class Player {
      *
      * @return the list of bots
      */
-    public LinkedQueue<Bot> getBots() {
+    public ArrayUnorderedList<Bot> getBots() {
         return bots;
     }
 
@@ -93,7 +94,13 @@ public class Player {
         }
     }
 
-    // Helper method to check if a location is available
+    /**
+     * Checks if a given location is available for selection.
+     *
+     * @param selectedLocation The location to be checked for availability.
+     * @param otherPlayer      The other player to compare the selected location with their base.
+     * @return True if the location is available, false if it is already taken by the other player.
+     */
     private boolean isLocationAvailable(Location selectedLocation, Player otherPlayer) {
         if (otherPlayer.getBase() != null && otherPlayer.getBase().equals(selectedLocation)) {
             return false; // Location is already taken by the other player
@@ -118,5 +125,9 @@ public class Player {
         }
 
         return result.toString();
+    }
+
+    public void addBot(Bot bot) {
+        this.bots.addToFront(bot);
     }
 }

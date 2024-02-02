@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.Structures.Implementations.ArrayUnorderedList;
 import org.example.Structures.Implementations.LinkedQueue;
 
 import java.util.Scanner;
@@ -16,6 +17,10 @@ public class Game {
         this.player1 = new Player("Player 1");
         this.player2 = new Player("Player 2");
         this.bots = new LinkedQueue<>();
+    }
+
+    public LinkedQueue<Bot> getBots() {
+        return bots;
     }
 
     public void startGame() {
@@ -43,6 +48,9 @@ public class Game {
         System.out.println("\n" + player1.toString());
         System.out.println(player2.toString());
         System.out.println(gameMap.toString());
+
+        // Set the number of bots for each player
+        setBotsForPlayers();
     }
 
     private void createNewMap() {
@@ -53,6 +61,45 @@ public class Game {
         double densityEdges = getInputAsDouble("Enter the density of edges (between 0 and 1): ");
 
         gameMap = gameMap.generateRandomMap(quantityLocations, bidirectional, densityEdges);
+    }
+
+    public void setBotsForPlayers() {
+        int player1Bots = getInputAsInt("Enter the number of bots for Player 1: ");
+        int player2Bots = getInputAsInt("Enter the number of bots for Player 2: ");
+
+        int maxBots = Math.max(player1Bots, player2Bots);
+
+        for (int i = 1; i <= maxBots; i++) {
+            if (i <= player1Bots) {
+                createAndAddBot(player1);
+            }
+            if (i <= player2Bots) {
+                createAndAddBot(player2);
+            }
+        }
+
+        // Display information about the assigned bots (for testing purposes)
+        System.out.println("\nBots assigned to " + player1.getName() + ":");
+        displayBots(player1);
+        System.out.println("\nBots assigned to " + player2.getName() + ":");
+        displayBots(player2);
+    }
+
+    private void createAndAddBot(Player player) {
+        Bot bot = new Bot(StrategiesType.MINIMUM_SPANNING_TREE, player.getName());
+        player.addBot(bot);
+        bots.enqueue(bot);
+    }
+
+    private void displayBots(Player player) {
+        ArrayUnorderedList<Bot> playerBots = player.getBots();
+        for (Bot bot : playerBots) {
+            System.out.println(bot.toString());
+        }
+    }
+
+    private void displayGameBots() {
+        System.out.println(this.bots.toString());
     }
 
     private int getInputAsInt(String message) {

@@ -6,5 +6,6 @@ public class Main {
         Game game = new Game();
         game.startGame();
         System.out.println(game);
+        System.out.println(game.getBots().toString());
     }
 }

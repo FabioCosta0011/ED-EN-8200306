@@ -1,15 +1,15 @@
 package org.example;
 
 public class Bot {
-    private Strategy strategy;
+    private StrategiesType strategy;
     private String playerName;
 
-    public Bot(Strategy strategy, String playerName) {
+    public Bot(StrategiesType strategy, String playerName) {
         this.strategy = strategy;
         this.playerName = playerName;
     }
 
-    public Strategy getStrategy() {
+    public StrategiesType getStrategy() {
         return strategy;
     }
 
@@ -17,13 +17,20 @@ public class Bot {
         return playerName;
     }
 
-    public void setStrategy(Strategy strategy) {
+    public void setStrategy(StrategiesType strategy) {
         this.strategy = strategy;
     }
 
     public void executeMovement() {
         if (strategy != null) {
-            strategy.executeMovement();
+
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Bot: " +
+                "\n Strategy - " + strategy +
+                "\n Assigned to - " + playerName + '\n';
     }
 }
