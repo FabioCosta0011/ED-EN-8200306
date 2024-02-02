@@ -32,7 +32,7 @@ public class Location implements Comparable<Location> {
 
     @Override
     public String toString() {
-        return "Location " + (id+1) + " -> " + "(" + coordinateX + ", " + coordinateY + ")";
+        return "Location " + (id+1) + " - " + "(" + coordinateX + ", " + coordinateY + ")";
     }
 
     @Override

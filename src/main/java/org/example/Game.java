@@ -64,17 +64,19 @@ public class Game {
     }
 
     public void setBotsForPlayers() {
-        int player1Bots = getInputAsInt("Enter the number of bots for Player 1: ");
-        int player2Bots = getInputAsInt("Enter the number of bots for Player 2: ");
+        int player1Bots = getInputAsInt("Enter the number of bots for " + player1.getName() + ": ");
+        int player2Bots = getInputAsInt("Enter the number of bots for " + player2.getName() + ": ");
 
         int maxBots = Math.max(player1Bots, player2Bots);
 
         for (int i = 1; i <= maxBots; i++) {
             if (i <= player1Bots) {
-                createAndAddBot(player1);
+                StrategiesType strategy = selectStrategy(player1);
+                createAndAddBot(player1, strategy);
             }
             if (i <= player2Bots) {
-                createAndAddBot(player2);
+                StrategiesType strategy = selectStrategy(player2);
+                createAndAddBot(player2, strategy);
             }
         }
 
@@ -85,11 +87,32 @@ public class Game {
         displayBots(player2);
     }
 
-    private void createAndAddBot(Player player) {
-        Bot bot = new Bot(StrategiesType.MINIMUM_SPANNING_TREE, player.getName());
+    private StrategiesType selectStrategy(Player player) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\nSelect strategy for " + player.getName() + "'s bot:");
+        StrategiesType[] strategies = StrategiesType.values();
+
+        for (int i = 0; i < strategies.length; i++) {
+            System.out.println((i + 1) + ". " + strategies[i]);
+        }
+
+        int choice = getInputAsInt("Enter the number of the desired strategy: ");
+
+        if (choice >= 1 && choice <= strategies.length) {
+            return strategies[choice - 1];
+        } else {
+            System.out.println("Invalid strategy selection. Defaulting to SHORTEST_PATH.");
+            return StrategiesType.SHORTEST_PATH;
+        }
+    }
+
+    private void createAndAddBot(Player player, StrategiesType strategy) {
+        Bot bot = new Bot(strategy, player.getName(), player.getBase());
         player.addBot(bot);
         bots.enqueue(bot);
     }
+
 
     private void displayBots(Player player) {
         ArrayUnorderedList<Bot> playerBots = player.getBots();
